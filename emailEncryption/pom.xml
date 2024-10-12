@@ -8,10 +8,10 @@
 		<version>3.3.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>email-encryption</artifactId>
+	<groupId>com.email</groupId>
+	<artifactId>emailEncryption</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>email-encryption</name>
+	<name>emailEncryption</name>
 	<description>Email Encryption</description>
 	<url/>
 	<licenses>
