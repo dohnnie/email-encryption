@@ -1,14 +1,19 @@
 from email.message import EmailMessage
 import ssl
 import smtplib
+import sys
 #"zjmd esos bxgy xlpo"
+
+from py4j.java_gateway import JavaGateway 
+gateway = JavaGateway() 
+msgObjectFromJavaApp = gateway.entry_point
 
 sender =  "williamvinhtran01@gmail.com"
 password =  "zjmdesosbxgyxlpo"
-receiver =  "billvinhtran@gmail.com"
+receiver =  sys.argv[1]
 
-subject = "testing"
-body = """testing 1 2 3 4 5 6 7 8 9 """
+subject = sys.argv[2]
+body = sys.argv[3]
 
 em = EmailMessage()
 em['From'] = sender

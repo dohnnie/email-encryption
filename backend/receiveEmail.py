@@ -1,5 +1,7 @@
 import imaplib
 import email
+import sys
+
 
 server =  "imap.gmail.com"
 user =  "williamvinhtran01@gmail.com"
