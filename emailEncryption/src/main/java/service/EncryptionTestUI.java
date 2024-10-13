@@ -3,17 +3,21 @@ package service;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class EncryptionTestUI {
     private static EncryptionService encryptionService;
     private static String validEmail = "hackuta@gmail.com";
     private static String passwordEmail = "hackuta";
+    private static List<String> messageList = new ArrayList<>();
+    private static List<String> encryptedMessages = new ArrayList<>();
 
     public static void main(String[] args) {
         // Create frame
         JFrame frame = new JFrame("Encryption Test UI");
-        frame.setSize(400, 300);
+        frame.setSize(600, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
 
@@ -33,10 +37,24 @@ public class EncryptionTestUI {
         JButton submitButton = new JButton("Submit");
         submitButton.setBounds(150, 130, 100, 30);
 
-        // Output Area
-        JTextArea outputArea = new JTextArea();
-        outputArea.setBounds(50, 180, 300, 70);
-        outputArea.setEditable(false);
+        // Message List Label
+        JLabel messageListLabel = new JLabel("Encrypted Messages:");
+        messageListLabel.setBounds(400, 30, 150, 30);
+
+        // Message List (Encrypted Messages)
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        JList<String> messageJList = new JList<>(listModel);
+        JScrollPane messageScrollPane = new JScrollPane(messageJList);
+        messageScrollPane.setBounds(400, 60, 150, 150);
+
+        // Decrypted Message Label and Text Area
+        JLabel decryptedLabel = new JLabel("Decrypted Message:");
+        decryptedLabel.setBounds(50, 230, 150, 30);
+        JTextArea decryptedArea = new JTextArea();
+        decryptedArea.setBounds(50, 260, 500, 150);
+        decryptedArea.setLineWrap(true);
+        decryptedArea.setWrapStyleWord(true);
+        decryptedArea.setEditable(false);
 
         // Add components to frame
         frame.add(emailLabel);
@@ -44,12 +62,28 @@ public class EncryptionTestUI {
         frame.add(passwordLabel);
         frame.add(passwordField);
         frame.add(submitButton);
-        frame.add(outputArea);
+        frame.add(messageListLabel);
+        frame.add(messageScrollPane);
+        frame.add(decryptedLabel);
+        frame.add(decryptedArea);
 
         // Initialize the EncryptionService
         String password = "secret-password";
         String salt = "12345678";
         encryptionService = new EncryptionService(password, salt);
+
+        // Create some messages to encrypt
+        messageList.add("Hi from HackUTA");
+        messageList.add("Welcome to the Encryption System");
+        messageList.add("This is a secure message");
+        messageList.add("Enjoy the Hackathon!");
+
+        // Encrypt messages and populate the list
+        for (String message : messageList) {
+            String encryptedMessage = encryptionService.encrypt(message);
+            encryptedMessages.add(encryptedMessage);
+            listModel.addElement(encryptedMessage);
+        }
 
         // Action listener for Submit Button
         submitButton.addActionListener(new ActionListener() {
@@ -57,18 +91,21 @@ public class EncryptionTestUI {
             public void actionPerformed(ActionEvent e) {
                 String email = emailField.getText();
                 String passwordGiven = new String(passwordField.getPassword());
-                String message = "Hello from HackUTA";
+                int selectedIndex = messageJList.getSelectedIndex();
 
                 if (isValidEmail(email)) {
                     if (email.equals(validEmail) && passwordGiven.equals(passwordEmail)) {
-                        String encryptedMessage = encryptionService.encrypt(message);
-                        String decryptedMessage = encryptionService.decrypt(encryptedMessage);
-                        outputArea.setText("Encrypted Message: " + encryptedMessage + "\nDecrypted Message: " + decryptedMessage + "\nPassword is correct!");
+                        if (selectedIndex != -1) {
+                            String decryptedMessage = encryptionService.decrypt(encryptedMessages.get(selectedIndex));
+                            decryptedArea.setText(decryptedMessage);
+                        } else {
+                            decryptedArea.setText("Please select a message to decrypt.");
+                        }
                     } else {
-                        outputArea.setText("Invalid email or password.");
+                        decryptedArea.setText("Invalid email or password.");
                     }
                 } else {
-                    outputArea.setText("Invalid email format.");
+                    decryptedArea.setText("Invalid email format.");
                 }
             }
         });
@@ -84,4 +121,3 @@ public class EncryptionTestUI {
         return pattern.matcher(email).matches();
     }
 }
-
