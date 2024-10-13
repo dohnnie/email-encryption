@@ -68,6 +68,24 @@ public class Window extends JFrame {
 		add(subjectField);
         add(bodyField);
 
+        
+        try{
+            Process p = new ProcessBuilder("python3", "receiveEmail.py").start();
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String s;
+            int i = 0;
+            while ((s = stdInput.readLine()) != null) {
+                JLabel emails = new JLabel(s);
+                emails.setBounds(820, 75, 500, 30+i*30);
+                add(emails);
+                i++;
+            }
+        } catch(Exception ex){
+
+        }
+        
+        
+        
         setVisible(true);
 	}
 

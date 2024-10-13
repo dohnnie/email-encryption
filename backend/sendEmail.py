@@ -4,10 +4,6 @@ import smtplib
 import sys
 #"zjmd esos bxgy xlpo"
 
-from py4j.java_gateway import JavaGateway 
-gateway = JavaGateway() 
-msgObjectFromJavaApp = gateway.entry_point
-
 sender =  "williamvinhtran01@gmail.com"
 password =  "zjmdesosbxgyxlpo"
 receiver =  sys.argv[1]

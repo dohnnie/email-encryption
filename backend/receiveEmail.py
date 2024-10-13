@@ -2,7 +2,6 @@ import imaplib
 import email
 import sys
 
-
 server =  "imap.gmail.com"
 user =  "williamvinhtran01@gmail.com"
 password =  "zjmdesosbxgyxlpo"
@@ -18,7 +17,6 @@ for m in messages[0].split():
     _, data = imap.fetch(m, "(RFC822)")
 
     mess = email.message_from_bytes(data[0][1])
-    print(f"MessNum: {m}")
     print(f"From: {mess.get('From')}")
     print(f"To: {mess.get('To')}")
     print(f"Bcc: {mess.get('BCC')}")
